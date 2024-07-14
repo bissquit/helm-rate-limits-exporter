@@ -53,7 +53,7 @@ jobs:
 
       - name: 'Run Helm lint'
         run: |
-          helm lint ${CHART_NAME}
+          helm lint chart
 
       # TODO: fix all issues of kube-score
       - name: 'Run kube-score checks'
