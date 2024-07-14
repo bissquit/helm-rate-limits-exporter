@@ -58,7 +58,7 @@ jobs:
       # TODO: fix all issues of kube-score
       - name: 'Run kube-score checks'
         run: |
-          helm template rate-limits-exporter \
+          helm template chart \
             | kube-score score \
                 --ignore-test pod-networkpolicy -
 
@@ -68,10 +68,10 @@ jobs:
             --install \
             --namespace ${NAMESPACE} \
             --create-namespace \
-            --values rate-limits-exporter/values-custom.yaml \
+            --values values-custom.yaml \
             --wait \
-            rate-limits-exporter \
-            ./rate-limits-exporter
+            ${CHART_NAME} \
+            ./chart
 
           helm --namespace ${NAMESPACE} \
-            test rate-limits-exporter
+            test ${CHART_NAME}
