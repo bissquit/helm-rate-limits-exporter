@@ -76,17 +76,17 @@
             },
             {
               "type": "feat",
-              "section": ":gift: Features",
+              "section": ":fire: Features",
               "hidden": false
             },
             {
               "type": "fix",
-              "section": ":lady_beetle: Bug Fixes",
+              "section": ":bug: Bug Fixes",
               "hidden": false
             },
             {
               "type": "refactor",
-              "section": ":hammer_and_wrench: Refactored",
+              "section": ":building_construction: Refactored",
               "hidden": false
             },
             {
