@@ -1,4 +1,4 @@
-name: 'Test chart'
+name: 'Test chart (pure bash)'
 
 on:
   push:
