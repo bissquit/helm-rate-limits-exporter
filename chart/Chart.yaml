@@ -1,0 +1,19 @@
+apiVersion: v2
+name: rate-limits-exporter
+version: "1.1.0"
+#kubeVersion:
+description: Docker Hub rate limits exporter for Prometheus
+type: application
+keywords: []
+home: https://github.com/bissquit/rate-limits-exporter.git
+sources:
+  - https://github.com/bissquit/rate-limits-exporter.git
+  - https://github.com/bissquit/helm-rate-limits-exporter.git
+dependencies: []
+maintainers:
+  - name: Egor Vasilyev
+    url: https://github.com/bissquit
+icon: https://helm.sh/img/helm.svg
+appVersion: "v1.1.0"
+#deprecated:
+#annotations:
