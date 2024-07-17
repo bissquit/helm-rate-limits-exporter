@@ -4,6 +4,8 @@ metadata:
   name: {{ include "rate-limits-exporter.fullname" . }}
   labels:
     {{- include "rate-limits-exporter.labels" . | nindent 4 }}
+  annotations:
+    "kube-score/ignore": container-image-pull-policy
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:

@@ -59,9 +59,11 @@ resources:
   limits:
    cpu: 25m
    memory: 64Mi
+   ephemeral-storage: 100Mi
   requests:
    cpu: 25m
    memory: 64Mi
+   ephemeral-storage: 100Mi
 
 livenessProbe:
   httpGet:
