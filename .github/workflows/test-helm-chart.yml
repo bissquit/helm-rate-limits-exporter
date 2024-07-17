@@ -64,9 +64,7 @@ jobs:
       # TODO: fix all issues of kube-score
       - name: 'Run kube-score checks'
         run: |
-          helm template chart \
-            | kube-score score \
-                --ignore-test pod-networkpolicy -
+          helm template chart | kube-score score -
 
       - name: 'Run Helm tests'
         run: |

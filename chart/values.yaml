@@ -1,3 +1,9 @@
+app:
+  port: 8080
+  loop_time: 60
+  log_level: DEBUG
+  put_source_ip: False
+
 replicaCount: 1
 
 image:
@@ -27,17 +33,18 @@ podLabels: {}
 podSecurityContext: {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
   # capabilities:
   #   drop:
   #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+#  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
 
 service:
   type: ClusterIP
-  port: 8080
+  port: 80
 
 ingress:
   enabled: false
@@ -56,23 +63,27 @@ ingress:
   #      - chart-example.local
 
 resources:
-  limits:
-   cpu: 25m
-   memory: 64Mi
-   ephemeral-storage: 100Mi
   requests:
-   cpu: 25m
-   memory: 64Mi
+    cpu: 50m
+    memory: 64Mi
+    ephemeral-storage: 100Mi
+  limits:
+   cpu: 100m
+   memory: 128Mi
    ephemeral-storage: 100Mi
 
 livenessProbe:
   httpGet:
     path: /healthz
-    port: http
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 30
 readinessProbe:
   httpGet:
     path: /metrics
-    port: http
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 30
 
 # Additional volumes on the output Deployment definition.
 volumes: []
