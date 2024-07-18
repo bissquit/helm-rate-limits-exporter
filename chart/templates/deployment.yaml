@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "rate-limits-exporter.labels" . | nindent 4 }}
   annotations:
-    "kube-score/ignore": container-image-pull-policy,pod-networkpolicy,container-security-context-readonlyrootfilesystem
+    "kube-score/ignore": container-image-pull-policy,pod-networkpolicy
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
