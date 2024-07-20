@@ -77,7 +77,6 @@ jobs:
             --install \
             --namespace ${NAMESPACE} \
             --create-namespace \
-            --values values-custom.yaml \
             --wait \
             ${CHART_NAME} \
             ./chart
