@@ -6,17 +6,34 @@ metadata:
     {{- include "rate-limits-exporter.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
-    "kube-score/ignore": container-ephemeral-storage-request-and-limit,pod-probes,container-resources,container-security-context-user-group-id,container-image-pull-policy,container-security-context-readonlyrootfilesystem,container-security-context-user-group-id,pod-networkpolicy
+    "kube-score/ignore": pod-probes,container-image-pull-policy,pod-networkpolicy
 spec:
 #  securityContext:
-#    runAsUser: 1000
-#    runAsGroup: 1000
-#    fsGroup: 2000
+#    fsGroup: 100
   containers:
     - name: wget
       image: busybox:1.36.1
+      workingDir: /tmp
       command: ['wget']
       args: ['{{ include "rate-limits-exporter.fullname" . }}:{{ .Values.service.port }}']
-#      securityContext:
-#        readOnlyRootFilesystem: true
+      securityContext:
+        runAsUser: 65534
+        runAsGroup: 65534
+        readOnlyRootFilesystem: true
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+          ephemeral-storage: 100Mi
+        limits:
+          cpu: 100m
+          memory: 128Mi
+          ephemeral-storage: 100Mi
+      volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+  volumes:
+    - name: tmp
+      emptyDir:
+        sizeLimit: 10Mi
   restartPolicy: Never
