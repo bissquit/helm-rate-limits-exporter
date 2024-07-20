@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "rate-limits-exporter.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ include "rate-limits-exporter.serviceType" . }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: http

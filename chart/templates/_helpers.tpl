@@ -58,3 +58,14 @@ Create the name of the service account to use
 {{- default (include "rate-limits-exporter.fullname" .) .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Service type
+*/}}
+{{- define "rate-limits-exporter.serviceType" -}}
+{{- if .Values.service.type | regexMatch "^(ClusterIP|NodePort)$" }}
+{{- .Values.service.type }}
+{{- else }}
+{{- fail "Service type could only be whether NodePort or ClusterIP" }}
+{{- end }}
+{{- end }}
