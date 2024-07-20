@@ -8,8 +8,6 @@ metadata:
     "helm.sh/hook": test
     "kube-score/ignore": pod-probes,container-image-pull-policy,pod-networkpolicy
 spec:
-#  securityContext:
-#    fsGroup: 100
   containers:
     - name: wget
       image: busybox:1.36.1
