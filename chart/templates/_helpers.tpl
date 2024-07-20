@@ -56,7 +56,5 @@ Create the name of the service account to use
 {{- define "rate-limits-exporter.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
 {{- default (include "rate-limits-exporter.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
