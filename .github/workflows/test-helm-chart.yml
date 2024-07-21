@@ -1,0 +1,80 @@
+name: 'Test chart'
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!main'
+  workflow_dispatch:
+
+env:
+  HELM_VERSION: v3.15.2
+  KUBERNETES_CLUSTER_VERSION: v1.28.9
+  KIND_VERSION: v0.23.0
+  KUBE_SCORE_VERSION: v1.18.0
+  CHART_NAME: rate-limits-exporter
+  NAMESPACE: awesome-app
+
+jobs:
+  test-chart:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: 'Debug'
+        run: |
+          printenv
+
+      - name: 'Checkout server repository'
+        uses: actions/checkout@v4
+
+      - name: 'Install prerequisites'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -yq --no-install-recommends \
+            curl
+          
+          echo '--- Install kube-score'
+          curl -Lo ./kube-score.tar.gz https://github.com/zegl/kube-score/releases/download/${KUBE_SCORE_VERSION}/kube-score_${KUBE_SCORE_VERSION//v}_linux_amd64.tar.gz
+          tar -zxvf kube-score.tar.gz
+          chmod +x kube-score
+          sudo mv kube-score /usr/local/bin/
+
+      - name: 'Install Helm'
+        uses: azure/setup-helm@v4.2.0
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: 'Install kubectl'
+        uses: azure/setup-kubectl@v3
+        with:
+          version: ${{ env.KUBERNETES_CLUSTER_VERSION }}
+
+      - name: 'Install kind and create Kubernetes cluster'
+        uses: helm/kind-action@v1
+        with:
+          version: ${{ env.KIND_VERSION }}
+          node_image: kindest/node:${{ env. KUBERNETES_CLUSTER_VERSION }}
+
+      - name: 'Run Helm lint'
+        run: |
+          helm lint chart
+
+      # TODO: fix all issues of kube-score
+      - name: 'Run kube-score checks'
+        run: |
+          helm template chart | kube-score score -
+
+      - name: 'Run Helm tests'
+        run: |
+          helm upgrade \
+            --install \
+            --namespace ${NAMESPACE} \
+            --create-namespace \
+            --wait \
+            ${CHART_NAME} \
+            ./chart
+
+          helm --namespace ${NAMESPACE} \
+            test ${CHART_NAME}

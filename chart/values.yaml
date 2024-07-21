@@ -1,0 +1,97 @@
+app:
+  # -- Port to be listened by application in POD. This option doesn't change Service port (use service.port).
+  port: 8080
+  # -- Default time range in seconds to perform rate limits checks
+  loop_time: 60
+  # -- Default log level
+  log_level: DEBUG
+  # -- Source ip address from headers will be inserted into labels. Be careful to use this option because many different ip addressess in the label set will produce a lot of new time series in Prometheus TSDB. Read **CAUTION** in official article [METRIC AND LABEL NAMING](https://prometheus.io/docs/practices/naming/)
+  put_source_ip: False
+  # -- DockerHub username
+  dockerhub_username: ""
+  # -- DockerHub password. As secure alternative use [access token](https://docs.docker.com/security/for-developers/access-tokens/) instead
+  dockerhub_password: ""
+
+replicaCount: 1
+
+image:
+  repository: bissquit/rate-limits-exporter
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext:
+  # capabilities:
+  #   drop:
+  #   - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65534
+  runAsGroup: 65534
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+    ephemeral-storage: 100Mi
+  limits:
+   cpu: 100m
+   memory: 128Mi
+   ephemeral-storage: 100Mi
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 30
+readinessProbe:
+  httpGet:
+    path: /metrics
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 30
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
