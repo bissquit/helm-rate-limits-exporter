@@ -133,7 +133,8 @@
       {
         "assets": [
           "CHANGELOG.md",
-          "chart/Chart.yaml"
+          "chart/Chart.yaml",
+          "chart/README.md"
         ],
         "message": "chore(release): version ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
