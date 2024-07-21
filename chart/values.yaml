@@ -3,6 +3,8 @@ app:
   loop_time: 60
   log_level: DEBUG
   put_source_ip: False
+  dockerhub_username: ""
+  dockerhub_password: ""
 
 replicaCount: 1
 

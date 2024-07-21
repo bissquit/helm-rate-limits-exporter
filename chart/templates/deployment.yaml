@@ -39,8 +39,6 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-#            - name: APP_SECRETS_DIR
-#              value: "/opt/secrets/..data/"
             - name: APP_PORT
               value: "{{ .Values.app.port }}"
             - name: APP_LOOP_TIME
@@ -49,6 +47,16 @@ spec:
               value: "{{ .Values.app.log_level }}"
             - name: APP_PUT_SOURCE_IP
               value: "{{ .Values.app.put_source_ip }}"
+            - name: APP_DOCKERHUB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "rate-limits-exporter.fullname" . }}
+                  key: dockerhub_username
+            - name: APP_DOCKERHUB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "rate-limits-exporter.fullname" . }}
+                  key: dockerhub_password
           ports:
             - name: http
               containerPort: {{ .Values.app.port }}
