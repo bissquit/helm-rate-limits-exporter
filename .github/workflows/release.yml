@@ -8,6 +8,9 @@ on:
 
 permissions: write-all
 
+env:
+  HELM_DOCS_VERSION: v1.14.2
+
 jobs:
   helm-docs:
     name: 'Generate Helm documentation'
