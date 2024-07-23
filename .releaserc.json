@@ -125,7 +125,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "sed -i 's/^version.*$/version: v${nextRelease.version}/' chart/Chart.yaml"
+        "prepareCmd": "sed -i 's/^version.*$/version: ${nextRelease.version}/' chart/Chart.yaml"
       }
     ],
     [
@@ -136,7 +136,7 @@
           "chart/Chart.yaml",
           "chart/README.md"
         ],
-        "message": "chore(release): version ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        "message": "chore(release): version v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ]
   ]
