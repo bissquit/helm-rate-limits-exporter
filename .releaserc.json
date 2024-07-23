@@ -2,7 +2,7 @@
   "branches": [
     "main",
     {
-      "name": "issue-1/configure-docs",
+      "name": "issue-*",
       "prerelease": true
     }
   ],
