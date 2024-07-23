@@ -70,8 +70,6 @@ jobs:
         with:
           name: readme
           path: chart/README.md
-      - run: |
-          ls -lh chart/
 
       - name: 'Release'
         uses: cycjimmy/semantic-release-action@v4

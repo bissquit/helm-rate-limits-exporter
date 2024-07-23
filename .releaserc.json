@@ -1,10 +1,6 @@
 {
   "branches": [
-    "main",
-    {
-      "name": "issue-*",
-      "prerelease": true
-    }
+    "main"
   ],
   "ci": false,
   "plugins": [
