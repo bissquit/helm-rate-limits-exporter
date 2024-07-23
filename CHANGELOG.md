@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [2.0.1](https://github.com/bissquit/helm-rate-limits-exporter/compare/v2.0.0...v2.0.1) (2024-07-23)
+
+
+### :bug: Bug Fixes
+
+* Change docs place and chart version ([#5](https://github.com/bissquit/helm-rate-limits-exporter/issues/5)) ([4bc6099](https://github.com/bissquit/helm-rate-limits-exporter/commit/4bc609903cd7ceeaf08f881687f660b2cf93862d))
+
 ## [2.0.0](https://github.com/bissquit/helm-rate-limits-exporter/compare/v1.1.0...v2.0.0) (2024-07-23)
 
 
