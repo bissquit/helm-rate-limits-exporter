@@ -1,6 +1,10 @@
 {
   "branches": [
-    "main"
+    "main",
+    {
+      "name": "issue-1/configure-docs",
+      "prerelease": true
+    }
   ],
   "ci": false,
   "plugins": [
