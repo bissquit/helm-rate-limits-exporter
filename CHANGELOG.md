@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0](https://github.com/bissquit/helm-rate-limits-exporter/compare/v2.0.1...v2.1.0) (2024-07-28)
+
+
+### :fire: Features
+
+* Running python autotests against service inside k8s ([#7](https://github.com/bissquit/helm-rate-limits-exporter/issues/7)) ([47f49fd](https://github.com/bissquit/helm-rate-limits-exporter/commit/47f49fd495307c522ee748c0f35852418a3a5167))
+
 ### [2.0.1](https://github.com/bissquit/helm-rate-limits-exporter/compare/v2.0.0...v2.0.1) (2024-07-23)
 
 
