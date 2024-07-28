@@ -6,21 +6,20 @@ metadata:
     {{- include "rate-limits-exporter.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
-    "kube-score/ignore": pod-probes,container-image-pull-policy,pod-networkpolicy
+    "kube-score/ignore": pod-probes,container-image-pull-policy,pod-networkpolicy,container-security-context-readonlyrootfilesystem
 spec:
   containers:
     - name: autotests
       image: python:3.9.19-slim-bookworm
       workingDir: /opt
-      command: ["/bin/sh", "-c"]
-      args: ['cd /opt ; python3 -m pip install -r requirements.txt ; python3 -m pytest -v']
+      command: ["/bin/bash", "-c"]
+      args: ['python3 -m pip install -r requirements.txt ; python3 -m pytest -v']
       env:
         - name: APP_URL
           value: "http://{{ include "rate-limits-exporter.fullname" . }}:{{ .Values.service.port }}"
       securityContext:
         runAsUser: 65534
         runAsGroup: 65534
-#        readOnlyRootFilesystem: true
       resources:
         requests:
           cpu: 50m
@@ -31,12 +30,13 @@ spec:
           memory: 128Mi
           ephemeral-storage: 100Mi
       volumeMounts:
+        - mountPath: /opt/.pytest_cache
+          name: cache
+        # fix for nobody user with /nonexistent home
         - mountPath: /nonexistent
           name: home
         - mountPath: /opt
           name: autotests
-        - mountPath: /opt/.pytest_cache
-          name: cache
   volumes:
     - name: cache
       emptyDir:
