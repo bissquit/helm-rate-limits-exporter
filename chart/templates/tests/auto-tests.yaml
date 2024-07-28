@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "rate-limits-exporter.fullname" . }}-autotests"
+  labels:
+    {{- include "rate-limits-exporter.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+    "kube-score/ignore": pod-probes,container-image-pull-policy,pod-networkpolicy,container-security-context-readonlyrootfilesystem
+spec:
+  containers:
+    - name: autotests
+      image: python:3.9.19-slim-bookworm
+      workingDir: /opt
+      command: ["/bin/bash", "-c"]
+      args: ['python3 -m pip install -r requirements.txt ; python3 -m pytest -v']
+      env:
+        - name: APP_URL
+          value: "http://{{ include "rate-limits-exporter.fullname" . }}:{{ .Values.service.port }}"
+      securityContext:
+        runAsUser: 65534
+        runAsGroup: 65534
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+          ephemeral-storage: 100Mi
+        limits:
+          cpu: 100m
+          memory: 128Mi
+          ephemeral-storage: 100Mi
+      volumeMounts:
+        - mountPath: /opt/.pytest_cache
+          name: cache
+        # fix for nobody user with /nonexistent home
+        - mountPath: /nonexistent
+          name: home
+        - mountPath: /opt
+          name: autotests
+  volumes:
+    - name: cache
+      emptyDir:
+        sizeLimit: 10Mi
+    - name: home
+      emptyDir:
+        sizeLimit: 10Mi
+    - name: autotests
+      configMap:
+        name: "{{ include "rate-limits-exporter.fullname" . }}-autotests"
+  restartPolicy: Never

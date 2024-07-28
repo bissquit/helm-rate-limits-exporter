@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ include "rate-limits-exporter.fullname" . }}-autotests"
+  labels:
+    {{- include "rate-limits-exporter.labels" . | nindent 4 }}
+# accessing files using helm https://helm.sh/docs/chart_template_guide/accessing_files/
+data:
+{{- range $path, $_ := .Files.Glob "auto-tests/*" }}
+{{ base $path | indent 2 }}: |
+{{ $.Files.Get $path | indent 4 }}
+{{- end }}
