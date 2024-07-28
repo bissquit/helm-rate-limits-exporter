@@ -13,7 +13,7 @@ spec:
       image: python:3.9.19-slim-bookworm
       workingDir: /opt
       command: ["/bin/sh", "-c"]
-      args: ['cd /opt ; python3 -m pip install -r requirements.txt ; python3 -m pytest']
+      args: ['cd /opt ; python3 -m pip install -r requirements.txt ; python3 -m pytest -v']
       env:
         - name: APP_URL
           value: "http://{{ include "rate-limits-exporter.fullname" . }}:{{ .Values.service.port }}"
