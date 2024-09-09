@@ -32,8 +32,7 @@ jobs:
       - name: 'Install prerequisites'
         run: |
           sudo apt-get update
-          sudo apt-get install -yq --no-install-recommends \
-            curl
+          sudo apt-get install -yq --no-install-recommends curl
           
           echo '--- Install kube-score'
           curl -Lo ./kube-score.tar.gz https://github.com/zegl/kube-score/releases/download/${KUBE_SCORE_VERSION}/kube-score_${KUBE_SCORE_VERSION//v}_linux_amd64.tar.gz
@@ -61,20 +60,20 @@ jobs:
         run: |
           helm lint chart
 
-      # TODO: fix all issues of kube-score
       - name: 'Run kube-score checks'
+        working-directory: chart
         run: |
-          helm template chart | kube-score score -
+          helm template . | kube-score score -
 
       - name: 'Run Helm tests'
+        working-directory: chart
         run: |
           helm upgrade \
             --install \
             --namespace ${NAMESPACE} \
             --create-namespace \
             --wait \
-            ${CHART_NAME} \
-            ./chart
+            ${CHART_NAME} .
 
           helm --namespace ${NAMESPACE} \
             test ${CHART_NAME}
