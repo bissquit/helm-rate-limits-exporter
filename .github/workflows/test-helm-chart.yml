@@ -12,6 +12,7 @@ env:
   KUBERNETES_CLUSTER_VERSION: v1.28.9
   KIND_VERSION: v0.23.0
   KUBE_SCORE_VERSION: v1.18.0
+  KUBE_CONFORM_VERSION: 0.6.7
   CHART_NAME: rate-limits-exporter
   NAMESPACE: awesome-app
 
@@ -28,6 +29,11 @@ jobs:
 
       - name: 'Checkout server repository'
         uses: actions/checkout@v4
+
+      - name: 'Install Kubeconform'
+        uses: bmuschko/setup-kubeconform@v1
+        with:
+          kubeconform-version: ${{ env.KUBE_CONFORM_VERSION }}
 
       - name: 'Install Helm'
         uses: azure/setup-helm@v4.2.0
@@ -55,6 +61,10 @@ jobs:
       - name: 'Run Helm lint'
         run: |
           helm lint chart
+
+      - name: 'Run Kubeconform'
+        run: |
+          helm template . | kubeconform -kubernetes-version ${KUBERNETES_CLUSTER_VERSION//v} -summary -strict -verbose -
 
       - name: 'Run kube-score checks'
         working-directory: chart
