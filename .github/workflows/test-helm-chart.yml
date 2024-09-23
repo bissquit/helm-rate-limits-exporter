@@ -63,6 +63,7 @@ jobs:
           helm lint chart
 
       - name: 'Run Kubeconform'
+        working-directory: chart
         run: |
           helm template . | kubeconform -kubernetes-version ${KUBERNETES_CLUSTER_VERSION//v} -summary -strict -verbose -
 
